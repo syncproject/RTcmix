@@ -16,7 +16,7 @@
 
    fplot with more than one argument sends data to gnuplot.  The second
    argument tells gnuplot how long to keep the window up before quitting.
-   (This is the "pause" parameter in gnuplot.)  The third, optional, 
+   (This is the "pause" parameter in gnuplot.)  The third, optional,
    argument is any string that gnuplot understands after a plot command.
    This is most useful for controlling the type of plot, e.g., with lines,
    points, dots, impulses, etc.  See the gnuplot manual for more info.
@@ -80,7 +80,7 @@ fplot(float p[], short n_args, double pp[])
 			fclose(fdata);
 
 			plotcmds = DOUBLE_TO_STRING(pp[2]);
-			fprintf(fcmd, 
+			fprintf(fcmd,
 #ifdef MACOSX
 /* NB: requires installation of Aquaterm and gnuplot 3.8 */
 						"set term aqua %d\n"
@@ -100,7 +100,9 @@ fplot(float p[], short n_args, double pp[])
 
 			snprintf(cmd, 255, "gnuplot %s &", cmd_file);
 			cmd[255] = 0;
+			#ifndef IOS
 			system(cmd);
+			#endif
 		}
 		else
 			return die("fplot", "You must make a gen before plotting it!");
