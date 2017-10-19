@@ -7,7 +7,7 @@
 #
 #   $ ./configure [--with-alsa] [--with-perl] [--with-python]
 #
-# See INSTALL for details.  After using configure, you can 
+# See INSTALL for details.  After using configure, you can
 # override what it does by editing site.conf, if you want.
 ###############################################################
 
@@ -75,7 +75,7 @@ endif
 # -- Mac OS X -------------------------------------------------
 ifeq ($(ARCH),MACOSX)
   # DAS: create better macro
-  ARCHFLAGS = -fno-common -DMACOSX   
+  ARCHFLAGS = -fno-common -DMACOSX
   ARCH_RTLDFLAGS = -dylib_file /usr/lib/$(RTLIB):$(LIBRTCMIX)
   CC = cc
   CXX = c++ -Wno-deprecated
@@ -119,7 +119,7 @@ ifeq ($(ARCH),MACOSX)
 	ifndef RTLIBTYPE
 		RTLIBTYPE = DYNAMIC
 	endif
-	ifeq ($(RTLIBTYPE), DYNAMIC) 
+	ifeq ($(RTLIBTYPE), DYNAMIC)
         SHLIB_SUFFIX = dylib
 		RTLIB_LDFLAGS = $(DYNAMIC_LDFLAGS)
 	else
@@ -156,41 +156,59 @@ ifeq ($(ARCH),MACOSX)
 
   # -- iOS ----------------------------------------------------
   ifeq ($(BUILDTYPE), IOS)
-	# This is always true for IOS
-	RTLIBTYPE = STATIC
-	SHLIB_SUFFIX = a
-	# This is overridable in site.conf
-	ifndef AUDIODRIVER
+	  # This is always true for IOS
+	  RTLIBTYPE = STATIC
+	  SHLIB_SUFFIX = a
+	  # This is overridable in site.conf
+	  ifndef AUDIODRIVER
     	AUDIODRIVER=APPLE
     endif
-	ifeq ($(AUDIODRIVER), EMBEDDEDAUDIO)
-		CMIX_FLAGS += -DEMBEDDEDAUDIO
-	else
-		CMIX_FLAGS += -DAPPLEAUDIO
-	endif
+
+	  ifeq ($(AUDIODRIVER), EMBEDDEDAUDIO)
+		  CMIX_FLAGS += -DEMBEDDEDAUDIO
+	  else
+		  CMIX_FLAGS += -DAPPLEAUDIO
+	  endif
+
     ifeq ($(IPHONE_TYPE), SIMULATOR)
       ARCH_BITFLAGS = -m64
-      ARCHFLAGS += $(ARCH_BITFLAGS) -DEMBEDDED -DIOS -DSIMULATOR -arch i386 -arch x86_64
-      ARCH_RTLDFLAGS = -dylib_file /usr/lib/$(RTLIB):$(LIBRTCMIX) -arch i386 -arch x86_64 -framework AudioToolbox
+
+      ARCH_VARIABLE = x86_64
+      # ARCH_VARIABLE = i386
+
+      SHLIB = rtcmix_iphone-SIM_$(ARCH_VARIABLE)
+      ARCHFLAGS += $(ARCH_BITFLAGS) -DEMBEDDED -DIOS -DSIMULATOR -arch $(ARCH_VARIABLE)
+      ARCH_RTLDFLAGS = -dylib_file /usr/lib/$(RTLIB):$(LIBRTCMIX) -arch $(ARCH_VARIABLE) -framework AudioToolbox
+
       ifeq ($(USE_OSX_DISPATCH), TRUE)
         ARCHFLAGS += -DUSE_OSX_DISPATCH
       endif
-      IPHONE_CFLAGS = -isysroot `xcrun -sdk iphonesimulator --show-sdk-path`
+
+      IPHONE_CFLAGS = -isysroot `xcrun -sdk iphonesimulator --show-sdk-path` -mios-simulator-version-min=9.2
       CC = `xcrun -sdk iphonesimulator -f cc`
       CXX = `xcrun -sdk iphonesimulator -f c++` -Wno-deprecated
-	  SHLIB = rtcmix_iphone-SIM
     endif
+
     ifeq ($(IPHONE_TYPE), DEVICE)
       ARCHFLAGS += $(ARCH_BITFLAGS) -DEMBEDDED -DIOS -DIOSDEV
       ARCH_RTLDFLAGS =
+
       ifeq ($(USE_OSX_DISPATCH), TRUE)
         ARCHFLAGS += -DUSE_OSX_DISPATCH
       endif
+
       IPHONE_CFLAGS = -isysroot `xcrun -sdk iphoneos --show-sdk-path`
-      CC = `xcrun -sdk iphoneos -f cc` -arch armv7s -arch armv7 -arch arm64
-      CXX = `xcrun -sdk iphoneos -f c++` -arch armv7s -arch armv7 -arch arm64
-	  SHLIB = rtcmix_iphone-DEV
+
+      # ARCH_VARIABLE = armv7s
+      # ARCH_VARIABLE = armv7
+      ARCH_VARIABLE = arm64
+      #CC = `xcrun -sdk iphoneos -f cc` -arch $(ARCH_VARIABLE) -arch armv7 -arch arm64
+      CC = `xcrun -sdk iphoneos -f cc` -arch $(ARCH_VARIABLE) -mios-version-min=9.2
+      CXX = `xcrun -sdk iphoneos -f c++` -arch $(ARCH_VARIABLE) -mios-version-min=9.2
+	    SHLIB = rtcmix_iphone-DEV_$(ARCH_VARIABLE)
     endif
+
+    RTLIB_INSTALL_DIR = $(LIBDIR)
   endif
 endif
 
@@ -311,14 +329,14 @@ ifeq ($(ARCH),MACOSX)
     	SHARED_LDFLAGS = $(ARCHFLAGS) -bundle -flat_namespace -undefined suppress
   endif
   DYNAMIC_LDFLAGS = $(ARCHFLAGS) -flat_namespace -undefined suppress -dynamiclib -install_name $(LIBDIR)/$(RTLIB)
-  DYN = 
+  DYN =
 endif
 ifeq ($(ARCH),SGI)
   SYS_LDFLAGS = -lpthread -laudio -lm
   DSO_LDFLAGS = $(SYS_LDFLAGS)
   SHARED_LDFLAGS = -shared -update_registry $(LIBDESTDIR)/so_locations
   DYNAMIC_LDFLAGS = $(SHARED_LDFLAGS)
-  DYN = 
+  DYN =
 endif
 ifeq ($(ARCH),FREEBSD)
   SYS_LDFLAGS += -pthread -lm -ll
