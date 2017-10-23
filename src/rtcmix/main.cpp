@@ -253,6 +253,11 @@ int RTcmix_stopAudio()
 
 #endif // IOS
 
+FRAMETYPE RTcmix_getElapsedFrames()
+{
+    return globalApp->getElapsedFrames();
+}
+
 #ifdef MAXMSP
 
 // this is for dynamic loading of RTcmix instruments (for development)

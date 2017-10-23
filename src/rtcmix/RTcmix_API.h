@@ -45,6 +45,7 @@ extern "C" {
 	int RTcmix_getBufferChannelCount(char *bufname);
 	void RTcmix_setPField(int inlet, float pval);
 	void pfield_set(int inlet, float pval);
+	long long RTcmix_getElapsedFrames();
 #ifdef MAXMSP
 	void loadinst(char *dsoname);
 	void unloadinst();
