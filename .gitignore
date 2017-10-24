@@ -110,3 +110,4 @@ mout*
 *.xcuserstate
 *.xcscheme
 *.plist
+.DS_Store
