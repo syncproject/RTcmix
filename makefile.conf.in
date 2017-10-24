@@ -131,6 +131,7 @@ ifeq ($(ARCH),MACOSX)
 		RTLIB_LDFLAGS =
 	endif
 	RTLIB_INSTALL_DIR = $(LIBDIR)
+	OPT += -mmacosx-version-min=10.10
   endif
 
   # -- MaxMSP -------------------------------------------------
