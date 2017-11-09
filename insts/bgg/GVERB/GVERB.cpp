@@ -43,6 +43,40 @@ GVERB::GVERB() : Instrument()
 
 GVERB::~GVERB()
 {
+	damper_free(realp.inputdamper);
+	for (int i = 0; i < FDNORDER; i++)
+	{
+		damper_free(realp.fdndamps[i]);
+		fixeddelay_free(realp.fdndels[i]);
+	}
+
+	fixeddelay_free(realp.tapdelay);
+
+	diffuser_free(realp.ldifs[0]);
+	diffuser_free(realp.ldifs[1]);
+	diffuser_free(realp.ldifs[2]);
+	diffuser_free(realp.ldifs[3]);
+	free(realp.ldifs);
+
+
+	diffuser_free(realp.rdifs[0]);
+	diffuser_free(realp.rdifs[1]);
+	diffuser_free(realp.rdifs[2]);
+	diffuser_free(realp.rdifs[3]);
+	free(realp.rdifs);
+
+	free(realp.fdndels);
+	free(realp.fdndamps);
+	free(realp.fdngains);
+	free(realp.fdnlens);
+	free(realp.d);
+	free(realp.u);
+	free(realp.f);
+
+	free(realp.taps);
+	free(realp.tapgains);
+
+	delete in;
 }
 
 int GVERB::init(double pfs[], int n_args)
@@ -227,7 +261,7 @@ int GVERB::init(double pfs[], int n_args)
 
 
 	// these values get set after all the init stuff
-	if (pfs[4] < 1.0 || pfs[4] > maxroomsize) 
+	if (pfs[4] < 1.0 || pfs[4] > maxroomsize)
 		return die("GVERB", "bogus roomsize: %f\n", pfs[4]);
 	gverb_set_roomsize(p, pfs[4]); // sets p->roomsize
 
@@ -276,7 +310,7 @@ void GVERB::doupdate()
 	amp = pfs[3];
 
 	if (pfs[4] != p->roomsize) {
-		if (pfs[4] < 1.0 || pfs[4] > p->maxroomsize) 
+		if (pfs[4] < 1.0 || pfs[4] > p->maxroomsize)
 			rtcmix_warn("GVERB", "bogus roomsize: %f\n", pfs[4]);
 		gverb_set_roomsize(p, pfs[4]); // sets p->roomsize
 	}
@@ -325,7 +359,7 @@ int GVERB::run()
 	float out[2];
 
 	rtgetin(in, this, samps);
-	
+
 	for (i = 0; i < samps; i += inputChannels()) {
 		if (--branch <= 0) {
 			doupdate();
