@@ -51,6 +51,12 @@ void diffuser_flush(ty_diffuser *p)
 	memset(p->buf, 0, p->size * sizeof(float));
 }
 
+void diffuser_free(ty_diffuser *p)
+{
+    free(p->buf);
+    free(p);
+}
+
 ty_damper *damper_make(float damping)
 {
 	ty_damper *p;
@@ -66,6 +72,12 @@ ty_damper *damper_make(float damping)
 void damper_flush(ty_damper *p)
 {
 	p->delay = 0.0f;
+}
+
+
+void damper_free(ty_damper *damper)
+{
+    free(damper);
 }
 
 void fixeddelay_flush(ty_fixeddelay *p)
@@ -87,6 +99,12 @@ ty_fixeddelay *fixeddelay_make(int size)
 	for (i = 0; i < size; i++)
 		p->buf[i] = 0.0;
 	return(p);
+}
+
+void fixeddelay_free(ty_fixeddelay *p)
+{
+    free(p->buf);
+    free(p);
 }
 
 int isprime(int n)
@@ -130,4 +148,3 @@ int ff_round(float f) {
         f += (3<<22);
         return *((int*)&f) - 0x4b400000;
 }
-
