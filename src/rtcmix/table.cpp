@@ -332,7 +332,7 @@ _soundfile_table(const Arg args[], const int nargs, double **array, int *len)
 	else if (request_dur > 0.0)
 		table_frames = (long) (request_dur * srate + 0.5);
 
-	long start_frame = (long) (inskip * srate + 0.5); 
+	long start_frame = (long) (inskip * srate + 0.5);
 	if (inskip < 0.0)
 		start_frame = (long) -inskip;
 
@@ -340,7 +340,7 @@ _soundfile_table(const Arg args[], const int nargs, double **array, int *len)
 		table_frames = file_frames - start_frame;
 
 	long table_samps = table_frames * table_chans;
- 
+
 	double *block = new double[table_samps];
 	if (block == NULL)
 		return die("maketable (soundfile)", "Not enough memory for table.");
@@ -642,7 +642,7 @@ readerr:
 //    curvature > 0
 //                makes an exponential (concave) curve
 //
-// Derived from gen4 from the UCSD Carl package, described in F.R. Moore, 
+// Derived from gen4 from the UCSD Carl package, described in F.R. Moore,
 // "Elements of Computer Music."
 //                                                -JGG, 12/2/01, rev 1/25/04
 
@@ -651,7 +651,7 @@ readerr:
 // <n> steps, according to transition parameter <alpha>.  It stores the
 // resulting <n> values starting at location <output>.
 //    alpha = 0 yields a straight line,
-//    alpha < 0 yields a logarithmic transition, and 
+//    alpha < 0 yields a logarithmic transition, and
 //    alpha > 0 yields an exponential transition.
 // All of this in accord with the formula:
 //    output[i] = a + (b - a) * (1 - exp(i * alpha / (n-1))) / (1 - exp(alpha))
@@ -887,7 +887,7 @@ _linebrk_table(const Arg args[], const int nargs, double *array, const int len)
 // It is possible that the curve will loop outside of the area you expect,
 // especially with the "nonorm" tag, so use plottable to be sure.
 //
-// Adapted from cspline from the UCSD Carl package, described in F.R. Moore, 
+// Adapted from cspline from the UCSD Carl package, described in F.R. Moore,
 // "Elements of Computer Music."
 //                                                         - JGG, 6/20/04
 
@@ -1206,7 +1206,7 @@ _cheby_table(const Arg args[], const int nargs, double *array, const int len)
 // <min> and <max> define the range (inclusive) for the random numbers.
 // Both args must be present.
 //
-// NOTE: If you don't give the "nonorm" argument after "random", then the 
+// NOTE: If you don't give the "nonorm" argument after "random", then the
 // table will be normalized, thus disregarding your min and max!
 //
 // If <seed> is zero, seed comes from the microsecond clock, otherwise <seed>
@@ -1671,7 +1671,7 @@ maketable(const Arg args[], const int nargs)
 	}
 
 	// Allocate table array.  TablePField will own and delete this.
-	
+
 	double *data = NULL;
 	if (len > 0) {
 		data = new double[len];
@@ -1688,7 +1688,7 @@ maketable(const Arg args[], const int nargs)
 		}
 	} else { // setup for dynamic tables (PFSCHED/pfbus)
 		Arg targs[MAXDISPARGS];
-	
+
 		for (int i  = 0; i < lenindex; i++)
 			targs[i] = args[i];
 
@@ -1925,7 +1925,7 @@ copytable(const Arg args[], const int nargs)
 // If the "nointerp" tag is given, the index is truncated before reading
 // the table value.  A negative index is an error; an index that is higher
 // than the highest valid index returns the last table value.
-// 
+//
 // Based on sampfunc and sampfunci in RTcmix 3.6 source.    -JGG, 6/21/04
 
 double
@@ -2094,11 +2094,11 @@ plottable(const Arg args[], const int nargs)
 
 	int chars = table->print(fdata);
 	fclose(fdata);
-	
+
 	if (chars <= 0)
 		return die("plottable", "Cannot print this kind of table");
 
-	fprintf(fcmd, 
+	fprintf(fcmd,
 #ifdef MACOSX	// NB: requires installation of Aquaterm and gnuplot >=3.8
 		"set term aqua %d\n"
 #endif
@@ -2116,7 +2116,9 @@ plottable(const Arg args[], const int nargs)
 
 	snprintf(cmd, 255, "gnuplot %s &", cmd_file);
 	cmd[255] = 0;
+	#ifndef IOS
 	system(cmd);
+	#endif
 
 	return 0.0;
 }

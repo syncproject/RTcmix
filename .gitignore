@@ -111,3 +111,4 @@ mout*
 *.xcscheme
 *.plist
 .DS_Store
+.vscode/

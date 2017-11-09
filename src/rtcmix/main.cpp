@@ -255,7 +255,7 @@ int RTcmix_stopAudio()
 
 FRAMETYPE RTcmix_getElapsedFrames()
 {
-    return globalApp->getElapsedFrames();
+	return globalApp->getElapsedFrames();
 }
 
 #ifdef MAXMSP
