@@ -43,40 +43,42 @@ GVERB::GVERB() : Instrument()
 
 GVERB::~GVERB()
 {
-	damper_free(realp.inputdamper);
+	damper_free(p->inputdamper);
 	for (int i = 0; i < FDNORDER; i++)
 	{
-		damper_free(realp.fdndamps[i]);
-		fixeddelay_free(realp.fdndels[i]);
+		damper_free(p->fdndamps[i]);
+		fixeddelay_free(p->fdndels[i]);
 	}
 
-	fixeddelay_free(realp.tapdelay);
+	fixeddelay_free(p->tapdelay);
 
-	diffuser_free(realp.ldifs[0]);
-	diffuser_free(realp.ldifs[1]);
-	diffuser_free(realp.ldifs[2]);
-	diffuser_free(realp.ldifs[3]);
-	free(realp.ldifs);
+	diffuser_free(p->ldifs[0]);
+	diffuser_free(p->ldifs[1]);
+	diffuser_free(p->ldifs[2]);
+	diffuser_free(p->ldifs[3]);
+	free(p->ldifs);
 
 
-	diffuser_free(realp.rdifs[0]);
-	diffuser_free(realp.rdifs[1]);
-	diffuser_free(realp.rdifs[2]);
-	diffuser_free(realp.rdifs[3]);
-	free(realp.rdifs);
+	diffuser_free(p->rdifs[0]);
+	diffuser_free(p->rdifs[1]);
+	diffuser_free(p->rdifs[2]);
+	diffuser_free(p->rdifs[3]);
+	free(p->rdifs);
 
-	free(realp.fdndels);
-	free(realp.fdndamps);
-	free(realp.fdngains);
-	free(realp.fdnlens);
-	free(realp.d);
-	free(realp.u);
-	free(realp.f);
+	free(p->fdndels);
+	free(p->fdndamps);
+	free(p->fdngains);
+	free(p->fdnlens);
+	free(p->d);
+	free(p->u);
+	free(p->f);
 
-	free(realp.taps);
-	free(realp.tapgains);
+	free(p->taps);
+	free(p->tapgains);
 
-	delete in;
+	p = NULL;
+
+	delete [] in;
 }
 
 int GVERB::init(double pfs[], int n_args)
