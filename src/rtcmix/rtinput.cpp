@@ -478,7 +478,7 @@ RTcmix::releaseInput(int fdIndex)
 {
    // BGG -- added this to prevent file closings in interactive mode
    // we don't know if a file will be referenced again in the future
-   if (!interactive()) {
+   if (true || !interactive()) {
 #ifdef DEBUG
       printf("RTcmix::releaseInput: fdIndex %d\n", fdIndex);
 #endif
