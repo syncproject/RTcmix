@@ -17,7 +17,7 @@ glue.o: depend glue.cpp RTOscPField.h
 	$(CXX) $(CXXFLAGS) -c -o glue.o glue.cpp
 
 depend:
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(SRCS)' > depend
 
 -include depend
 

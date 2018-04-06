@@ -49,7 +49,7 @@ conf.tab.cpp: lex.conf.c $(YSRC)
 
 ifeq ($(BUILDTYPE), STANDALONE)
 depend:
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(TEST).cpp $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(TEST).cpp $(SRCS)' > depend
 else
 depend:
 

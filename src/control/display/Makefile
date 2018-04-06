@@ -43,7 +43,7 @@ $(APP):
 	cd $(APP); xcodebuild ARCHS="$(BUILD_ARCH)"
 
 depend:
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(SRCS)' > depend
 
 -include depend
 

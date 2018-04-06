@@ -31,7 +31,7 @@ $(PMLIB):
 	( cd portmidi; $(MAKE) $(MFLAGS) all; )
 
 depend:
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(SRCS)' > depend
 
 -include depend
 

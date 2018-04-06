@@ -167,13 +167,13 @@ $(LIB):	$(OBJECTS) $(OOBJECTS)
 
 depend:
 ifeq ($(ARCH),LINUX)
-	-$(SHELL) -ec '$(CC) -M $(CFLAGS) $(CFILES)' > depend
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(OCFILES)' >> depend
+	-$(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(CFILES)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(OCFILES)' >> depend
 endif
 ifeq ($(ARCH),SGI)
 # Note: -MM is a gcc extension. If no gcc, use -M.
 # Unfortunately, this doesn't work...   -JGG
-#	$(SHELL) -ec '$(CC) -M $(CFLAGS) $(SRCS) $(CPPSRCS)' > depend
+#	$(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(SRCS) $(CPPSRCS)' > depend
 endif
 
 -include depend

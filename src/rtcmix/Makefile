@@ -444,9 +444,9 @@ depend:
 ifeq ($(ARCH),SGI)
 # Note: -MM is a gcc extension. If no gcc, use -M.
 # Unfortunately, this doesn't work...   -JGG
-#	$(SHELL) -ec '$(CC) -M $(CFLAGS) $(SRCS) $(CPPSRCS)' > depend
+#	$(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(SRCS) $(CPPSRCS)' > depend
 else
-	-$(SHELL) -ec '$(CC) -M -DSHAREDLIBDIR=\"$(LIBDESTDIR)\" $(CFLAGS) $(COMMON_CSRCS) $(GEN_CSRCS) $(COMMON_CPPSRCS) $(IMBEDSRCS) $(MAIN_CPPSRCS) $(PERL_CCFLAGS)' > ./depend
+	-$(SHELL) -ec '$(DEPENDCC) -M -DSHAREDLIBDIR=\"$(LIBDESTDIR)\" $(CFLAGS) $(COMMON_CSRCS) $(GEN_CSRCS) $(COMMON_CPPSRCS) $(IMBEDSRCS) $(MAIN_CPPSRCS) $(PERL_CCFLAGS)' > ./depend
 endif
 
 -include depend

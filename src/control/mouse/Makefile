@@ -51,7 +51,7 @@ $(TEST): depend $(TEST).o $(LIBMOUSE)
 		$(GUILIBS) -lpthread
 
 depend:
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(TEST).cpp $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(TEST).cpp $(SRCS)' > depend
 
 -include depend
 

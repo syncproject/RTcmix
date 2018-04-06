@@ -66,7 +66,7 @@ $(AUDIOLIB):	$(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(AUDIO_DEFINES) -c $< -o $@
 
 depend:
-	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $(AUDIO_DEFINES) *.c *.cpp' > depend
+	$(SHELL) -ec '$(DEPENDCC) -MM $(CFLAGS) $(AUDIO_DEFINES) *.c *.cpp' > depend
 
 -include depend
 

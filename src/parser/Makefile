@@ -71,9 +71,9 @@ depend:
 ifeq ($(ARCH),SGI)
 # Note: -MM is a gcc extension. If no gcc, use -M.
 # # Unfortunately, this doesn't work...   -JGG
-# #   $(SHELL) -ec '$(CC) -M $(CFLAGS) $(SRCS)' > depend
+# #   $(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(SRCS)' > depend
 else
-	-$(SHELL) -ec '$(CC) -M $(CFLAGS) $(PERL_CCFLAGS) $(PYTHON_CCFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(PERL_CCFLAGS) $(PYTHON_CCFLAGS) $(SRCS)' > depend
 	@for DIR in $(DIRS); \
 	do \
 	  ( cd $$DIR; $(MAKE) $(MFLAGS) depend; ) \

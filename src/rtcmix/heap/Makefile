@@ -22,7 +22,7 @@ clean:
 
 depend:
 ifeq ($(ARCH),LINUX)
-	-$(SHELL) -ec '$(CC) -M $(CFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(SRCS)' > depend
 endif
 ifeq ($(ARCH),SGI)
 # Note: -MM is a gcc extension. If no gcc, use -M.

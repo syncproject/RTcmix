@@ -176,21 +176,17 @@ ifeq ($(ARCH),MACOSX)
 
     ifeq ($(IPHONE_TYPE), SIMULATOR)
       ARCH_BITFLAGS = -m64
-
-      ARCH_VARIABLE = x86_64
-      # ARCH_VARIABLE = i386
-
-      SHLIB = rtcmix_iphone-SIM_$(ARCH_VARIABLE)
-      ARCHFLAGS += $(ARCH_BITFLAGS) -DEMBEDDED -DIOS -DSIMULATOR -arch $(ARCH_VARIABLE)
-      ARCH_RTLDFLAGS = -dylib_file /usr/lib/$(RTLIB):$(LIBRTCMIX) -arch $(ARCH_VARIABLE) -framework AudioToolbox
-
+      ARCHFLAGS += $(ARCH_BITFLAGS) -DEMBEDDED -DIOS -DSIMULATOR 
+      ARCH_RTLDFLAGS = -dylib_file /usr/lib/$(RTLIB):$(LIBRTCMIX) -framework AudioToolbox
       ifeq ($(USE_OSX_DISPATCH), TRUE)
         ARCHFLAGS += -DUSE_OSX_DISPATCH
       endif
-
       IPHONE_CFLAGS = -isysroot `xcrun -sdk iphonesimulator --show-sdk-path` -mios-simulator-version-min=9.2
-      CC = `xcrun -sdk iphonesimulator -f cc`
-      CXX = `xcrun -sdk iphonesimulator -f c++` -Wno-deprecated
+      CC = `xcrun -sdk iphonesimulator -f cc` -arch i386 -arch x86_64
+      CXX = `xcrun -sdk iphonesimulator -f c++` -Wno-deprecated -arch i386 -arch x86_64 
+      DEPENDCC = `xcrun -sdk iphonesimulator -f cc` -arch i386
+      DEPENDCXX = `xcrun -sdk iphonesimulator -f c++` -Wno-deprecated -arch i386
+	  SHLIB = rtcmix_iphone-SIM
     endif
 
     ifeq ($(IPHONE_TYPE), DEVICE)
@@ -201,15 +197,12 @@ ifeq ($(ARCH),MACOSX)
         ARCHFLAGS += -DUSE_OSX_DISPATCH
       endif
 
-      IPHONE_CFLAGS = -isysroot `xcrun -sdk iphoneos --show-sdk-path`
-
-      # ARCH_VARIABLE = armv7s
-      # ARCH_VARIABLE = armv7
-      ARCH_VARIABLE = arm64
-      #CC = `xcrun -sdk iphoneos -f cc` -arch $(ARCH_VARIABLE) -arch armv7 -arch arm64
-      CC = `xcrun -sdk iphoneos -f cc` -arch $(ARCH_VARIABLE) -mios-version-min=9.2
-      CXX = `xcrun -sdk iphoneos -f c++` -arch $(ARCH_VARIABLE) -mios-version-min=9.2
-	    SHLIB = rtcmix_iphone-DEV_$(ARCH_VARIABLE)
+      IPHONE_CFLAGS = -isysroot `xcrun -sdk iphoneos --show-sdk-path` -mios-version-min=9.2
+      CC = `xcrun -sdk iphoneos -f cc` -arch armv7s -arch armv7 -arch arm64
+      CXX = `xcrun -sdk iphoneos -f c++` -arch armv7s -arch armv7 -arch arm64
+      DEPENDCC = `xcrun -sdk iphoneos -f cc` -arch armv7s
+      DEPENDCXX = `xcrun -sdk iphoneos -f c++` -arch armv7s
+	  SHLIB = rtcmix_iphone-DEV
     endif
 
     RTLIB_INSTALL_DIR = $(LIBDIR)
@@ -375,7 +368,14 @@ IMBCMIXOBJS = $(IMB_RTCMIX_O) $(GENLIB)
 # Things to be removed by 'clean'
 TRASH = core core.[0-9]+ *~
 
+ifndef DEPENDCC
+	DEPENDCC = $(CC)
+endif
+
+ifndef DEPENDCXX
+	DEPENDCXX = $(CXX)
+endif
+
 # Cool debugging feature:  to see value of make macro "$(MACRO)" type "make print-MACRO"
 print-%: ; @echo $* is $($*)
-
 

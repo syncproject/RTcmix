@@ -27,7 +27,7 @@ pfbusglue.o: pfbusglue.cpp PFBusPField.h
 	$(CXX) $(CXXFLAGS) -c -o pfbusglue.o pfbusglue.cpp
 
 depend:
-	-$(SHELL) -ec '$(CXX) -M $(CXXFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCXX) -M $(CXXFLAGS) $(SRCS)' > depend
 
 -include depend
 

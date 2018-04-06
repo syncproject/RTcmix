@@ -41,7 +41,7 @@ minc.cpp: lex.yy.c $(YSRC) minc_internal.h rename.h
 	$(YACC) $(YFLAGS) $(YSRC)
 
 depend:
-	-$(SHELL) -ec '$(CC) -M $(CFLAGS) $(SRCS)' > depend
+	-$(SHELL) -ec '$(DEPENDCC) -M $(CFLAGS) $(SRCS)' > depend
 
 -include depend
 
