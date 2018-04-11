@@ -80,8 +80,10 @@ ifeq ($(ARCH),MACOSX)
   # DAS: create better macro
   ARCHFLAGS = -fno-common -DMACOSX
   ARCH_RTLDFLAGS = -dylib_file /usr/lib/$(RTLIB):$(LIBRTCMIX)
-  CC = cc
-  CXX = c++ -Wno-deprecated
+  CC = cc -arch i386 -arch x86_64
+  CXX = c++ -Wno-deprecated -arch i386 -arch x86_64
+  DEPENDCC = cc 
+  DEPENDCXX = c++ -Wno-deprecated 
   LD = ld
   MAKE = make
   INSTALL = cp -f
