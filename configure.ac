@@ -107,7 +107,7 @@ AC_RUN_IFELSE(
    [CAN_BUILD_64BIT="yes"],
    [CAN_BUILD_64BIT="no"]
 )
-CFLAGS="-m32"
+CFLAGS=""
 AC_RUN_IFELSE(
    [AC_LANG_PROGRAM([], [return sizeof(void *) == 4 ? 0 : 1;])],
    [CAN_BUILD_32BIT="yes"],
@@ -154,7 +154,7 @@ else
    if test "$CAN_BUILD_32BIT" = "no"; then
       AC_MSG_ERROR([Don't know how to build a 32-bit object.])
    fi
-   ARCH_32BIT="-m32"
+   ARCH_32BIT=""
 fi
 
 # Set up summary display for user and export variables.

@@ -13,7 +13,7 @@
 
 #ifdef EMBEDDED
 typedef struct yy_buffer_state * YY_BUFFER_STATE;
-extern YY_BUFFER_STATE yy_scan_bytes(const char * buf, size_t len);
+extern YY_BUFFER_STATE yy_scan_bytes(const char * buf, int len);
 extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 #endif
 
